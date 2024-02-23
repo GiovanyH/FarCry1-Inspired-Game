@@ -13,10 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Arquivos de Cabeçalho\libs">
+      <UniqueIdentifier>{d38c02cb-9eba-4ca9-aded-3cb0f1f25de9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Cabeçalho\libs\glad">
+      <UniqueIdentifier>{3b2f135e-316f-4d31-ac57-de6f1736b719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Arquivos de Origem\libs">
+      <UniqueIdentifier>{d761c6d2-6765-4d2f-a031-24155644fce4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="libs\glad\src\glad.c">
+      <Filter>Arquivos de Origem\libs</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="libs\glad\include\glad\glad.h">
+      <Filter>Arquivos de Cabeçalho\libs\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\glad\include\KHR\khrplatform.h">
+      <Filter>Arquivos de Cabeçalho\libs\glad</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
