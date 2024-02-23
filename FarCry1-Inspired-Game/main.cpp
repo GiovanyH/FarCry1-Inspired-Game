@@ -9,11 +9,8 @@
 // render model using assimp
 // https://learnopengl.com/Model-Loading/Assimp
 
-// Put all of this GLFW stuff into another source file so that my mind is not cluttered with it
-
 // including glad and glfw
 #include "libs/glad/include/glad/glad.h"
-#include <GLFW/glfw3.h>
 
 // including iostream
 #include <iostream>
@@ -21,10 +18,11 @@
 namespace Gio
 {
 #include "engine/OS/OS.h"
+#include "engine/Renderer/Renderer.h"
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow* window);
+// Now that we put the GLFW stuff into a separate own class, let's do the same with the OpenGL stuff
+// We'll put the OpenGL stuff into a separate class called "Renderer"
 
 const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
@@ -39,63 +37,19 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 "}\n\0";
 
-// function to create a shader
-unsigned int create_shader(const char* shaderSource, GLenum shaderType)
-{
-	// creating the shader
-	unsigned int shader;
-	shader = glCreateShader(shaderType);
-	// attaching the shader source to the shader object
-	glShaderSource(shader, 1, &shaderSource, NULL);
-	// compiling the shader
-	glCompileShader(shader);
-	// checking if the shader compiled successfully
-	int success;
-	char infoLog[512];
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(shader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-	return shader;
-}
-
 // making a window with glfw
 int main()
 {
 	Gio::Window window(800, 600);
-	
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
+	Gio::Renderer renderer;
 
 	glViewport(0, 0, 800, 600);
 	// creating the vertex shader
-	unsigned int vertexShader = create_shader(vertexShaderSource, GL_VERTEX_SHADER);
-	unsigned int fragmentShader = create_shader(fragmentShaderSource, GL_FRAGMENT_SHADER);
+	unsigned int vertexShader = renderer.create_shader(vertexShaderSource, GL_VERTEX_SHADER);
+	unsigned int fragmentShader = renderer.create_shader(fragmentShaderSource, GL_FRAGMENT_SHADER);
 
 	// creating the shader program
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-	// attaching the shaders to the program
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	// linking the program
-	glLinkProgram(shaderProgram);
-
-	// checking if the program linked successfully
-	int success;
-	char infoLog[512];
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-	}
-	// deleting the shaders
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	unsigned int shader = renderer.shaderProgram(vertexShader, fragmentShader);
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
@@ -141,17 +95,15 @@ int main()
 	// the game loop
 	while (!glfwWindowShouldClose(window.glfw_window))
 	{
-		// render
-		// ------
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		renderer.update();
 
 		// draw our first triangle
-		glUseProgram(shaderProgram);
+		glUseProgram(shader);
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		//glDrawArrays(GL_TRIANGLES, 0, 6);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		// glBindVertexArray(0); // no need to unbind it every time 
+		
 		window.Update();
 	}
 
@@ -161,9 +113,9 @@ int main()
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+/*void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	// make sure the viewport matches the new window dimensions; note that width and 
 	// height will be significantly larger than specified on retina displays.
 	glViewport(0, 0, width, height);
-}
+}*/

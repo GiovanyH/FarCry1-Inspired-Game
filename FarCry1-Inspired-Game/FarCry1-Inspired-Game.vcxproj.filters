@@ -25,6 +25,9 @@
     <Filter Include="Arquivos de Cabeçalho\OS">
       <UniqueIdentifier>{cf70f21a-70d3-41db-a7c2-d15fb7b4ee2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Cabeçalho\Renderer">
+      <UniqueIdentifier>{52e1d419-9bb2-4715-81ba-a3fbdf2c9735}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -46,6 +49,12 @@
     </ClInclude>
     <ClInclude Include="engine\OS\OS.h">
       <Filter>Arquivos de Cabeçalho\OS</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Renderer\GladRender.h">
+      <Filter>Arquivos de Cabeçalho\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Renderer\Renderer.h">
+      <Filter>Arquivos de Cabeçalho\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,28 +6,33 @@ class Window
 	unsigned int height;
 
 public:
-	GLFWwindow* glfw_window;
+	Gio::GLFWwindow* glfw_window;
 	Window(unsigned int w, unsigned int h)
 	{
 		this->width = w;
 		this->height = h;
 		// initializing glfw
-		glfwInit();
+		Gio::glfwInit();
 		// setting the version of opengl to 3.3
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		Gio::glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		Gio::glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		// setting the profile to core
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		Gio::glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		// creating a window
-		GLFWwindow* window = glfwCreateWindow(width, height, "Far Cry 1 Inspired Game", NULL, NULL);
+		Gio::GLFWwindow* window = Gio::glfwCreateWindow(width, height, "Far Cry 1 Inspired Game", NULL, NULL);
 		// checking if the window was created
 		if (window == nullptr)
 		{
 			std::cout << "Failed to create GLFW window" << std::endl;
-			glfwTerminate();
+			Gio::glfwTerminate();
 		}
 		// making the window the current context
 		glfwMakeContextCurrent(window);
+
+		if (!gladLoadGLLoader((GLADloadproc)Gio::glfwGetProcAddress))
+		{
+			std::cout << "Failed to initialize GLAD" << std::endl;
+		}
 
 		this->glfw_window = window;
 	}
@@ -39,7 +44,7 @@ public:
 		// swapping the buffers
 		glfwSwapBuffers(glfw_window);
 		// polling for events
-		glfwPollEvents();
+		Gio::glfwPollEvents();
 	}
 
 	void ProcessInput()
@@ -54,6 +59,6 @@ public:
 
 	~Window()
 	{
-		glfwTerminate();
+		Gio::glfwTerminate();
 	}
 };
