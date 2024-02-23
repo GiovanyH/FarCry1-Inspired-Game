@@ -22,6 +22,9 @@
     <Filter Include="Arquivos de Origem\libs">
       <UniqueIdentifier>{d761c6d2-6765-4d2f-a031-24155644fce4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Arquivos de Cabeçalho\OS">
+      <UniqueIdentifier>{cf70f21a-70d3-41db-a7c2-d15fb7b4ee2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -37,6 +40,12 @@
     </ClInclude>
     <ClInclude Include="libs\glad\include\KHR\khrplatform.h">
       <Filter>Arquivos de Cabeçalho\libs\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\OS\glfw_window.h">
+      <Filter>Arquivos de Cabeçalho\OS</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\OS\OS.h">
+      <Filter>Arquivos de Cabeçalho\OS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

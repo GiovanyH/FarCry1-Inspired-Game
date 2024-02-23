@@ -9,12 +9,19 @@
 // render model using assimp
 // https://learnopengl.com/Model-Loading/Assimp
 
+// Put all of this GLFW stuff into another source file so that my mind is not cluttered with it
+
 // including glad and glfw
 #include "libs/glad/include/glad/glad.h"
 #include <GLFW/glfw3.h>
 
 // including iostream
 #include <iostream>
+
+namespace Gio
+{
+#include "engine/OS/OS.h"
+}
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -31,33 +38,6 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "{\n"
 "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 "}\n\0";
-
-GLFWwindow *init_glfw_and_opengl()
-{
-	// initializing glfw
-	glfwInit();
-	// setting the version of opengl to 3.3
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	// setting the profile to core
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	// creating a window
-	GLFWwindow* window = glfwCreateWindow(800, 600, "Far Cry 1 Inspired Game", NULL, NULL);
-	// checking if the window was created
-	if (window == NULL)
-	{
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return NULL;
-	}
-	// making the window the current context
-	glfwMakeContextCurrent(window);
-	// initializing glad
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-	// setting the viewport
-	glViewport(0, 0, 800, 600);
-	return window;
-}
 
 // function to create a shader
 unsigned int create_shader(const char* shaderSource, GLenum shaderType)
@@ -84,8 +64,15 @@ unsigned int create_shader(const char* shaderSource, GLenum shaderType)
 // making a window with glfw
 int main()
 {
-	GLFWwindow *window = init_glfw_and_opengl();
+	Gio::Window window(800, 600);
+	
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD" << std::endl;
+		return -1;
+	}
 
+	glViewport(0, 0, 800, 600);
 	// creating the vertex shader
 	unsigned int vertexShader = create_shader(vertexShaderSource, GL_VERTEX_SHADER);
 	unsigned int fragmentShader = create_shader(fragmentShaderSource, GL_FRAGMENT_SHADER);
@@ -152,12 +139,8 @@ int main()
 
 
 	// the game loop
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(window.glfw_window))
 	{
-		// input
-		// -----
-		processInput(window);
-
 		// render
 		// ------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -169,23 +152,11 @@ int main()
 		//glDrawArrays(GL_TRIANGLES, 0, 6);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		// glBindVertexArray(0); // no need to unbind it every time 
-
-		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-		// -------------------------------------------------------------------------------
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		window.Update();
 	}
-	// terminating glfw
-	glfwTerminate();
-	return 0;
-}
 
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow* window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
+
+	return 0;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
