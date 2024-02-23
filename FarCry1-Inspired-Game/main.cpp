@@ -1,6 +1,14 @@
 // far cry 1 inspired game
 // made from scratch using c++ and opengl
 
+// for today: set up opengl, render models, add textures, add lighting, add shadow
+// for tomorrow: add sound, add physics, add skybox, add terrain, 
+// some other day: add water, add particles, add ai, add foliage
+// add vehicles, add weapons, add multiplayer, add scripting, add cutscenes, add level editor
+
+// render model using assimp
+// https://learnopengl.com/Model-Loading/Assimp
+
 // including glad and glfw
 #include "libs/glad/include/glad/glad.h"
 #include <GLFW/glfw3.h>
